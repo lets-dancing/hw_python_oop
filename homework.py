@@ -1,6 +1,21 @@
+from _typeshed import Self
+
+
 class InfoMessage:
     """Информационное сообщение о тренировке."""
-    pass
+    def __init__(self,
+                 training_type: str,
+                 duration: float,
+                 distance: float,
+                 speed: float,
+                 calories: float) -> str:
+        self.training_type = training_type
+        self.duration = duration
+        self.distance = distance
+        self.speed = speed
+        self.calories = calories
+    def get_massage(self) -> None:
+        print (f'Тип тренировки: {self.training_type:.3f}; Длительность: {self.duration:.3f} ч.; Дистанция: {self.distance:.3f} км; Ср. скорость: {self.speed:.3f} км/ч; Потрачено ккал: {self.calories:.3f}')
 
 
 class Training:
@@ -11,15 +26,25 @@ class Training:
                  duration: float,
                  weight: float,
                  ) -> None:
-        pass
+        self.action = action
+        self.duration = duration
+        self.weight = weight
 
-    def get_distance(self) -> float:
+    def get_distance(self,
+                     action: int,
+                     LEN_STEP: float) -> float:
         """Получить дистанцию в км."""
-        pass
+        self.action = action
+        self.LEN_STEP = LEN_STEP
+        M_IN_KM = 1000
+        dist = action*LEN_STEP / M_IN_KM
 
-    def get_mean_speed(self) -> float:
+    def get_mean_speed(self,
+                       action: int,
+                       LEN_STEP: float,
+                       duration: float) -> float:
         """Получить среднюю скорость движения."""
-        pass
+        mean_speed = action * LEN_STEP / duration
 
     def get_spent_calories(self) -> float:
         """Получить количество затраченных калорий."""
@@ -27,7 +52,7 @@ class Training:
 
     def show_training_info(self) -> InfoMessage:
         """Вернуть информационное сообщение о выполненной тренировке."""
-        pass
+        return InfoMessage
 
 
 class Running(Training):
