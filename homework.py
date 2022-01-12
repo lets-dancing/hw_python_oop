@@ -61,7 +61,7 @@ class Running(Training):
         super().__init__(action, duration, weight)
 
     def get_spent_calories(self,
-                           coeff_calorie_1=8,
+                           coeff_calorie_1=18,
                            coeff_calorie_2=20) -> float:
         min_in_hour = self.duration * 60
         # формула расчёта (18 * средняя_скорость – 20)
