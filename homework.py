@@ -1,3 +1,6 @@
+from typing import List
+
+
 class InfoMessage:
     """Информационное сообщение о тренировке."""
 
@@ -129,7 +132,7 @@ class Swimming(Training):
         )
 
 
-def read_package(workout_type: str, data: list[int]) -> Training:
+def read_package(workout_type: str, data: List[int]) -> Training:
     """Прочитать данные полученные от датчиков."""
     training_type: dict[str, Training] = {
         'SWM': Swimming,
