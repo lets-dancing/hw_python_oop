@@ -1,27 +1,23 @@
 from typing import List
+from dataclasses import dataclass
 
 
+@dataclass
 class InfoMessage:
     """Информационное сообщение о тренировке."""
 
-    def __init__(self,
-                 training_type: str,
-                 duration: float,
-                 distance: float,
-                 speed: float,
-                 calories: float) -> str:
-        self.training_type = training_type
-        self.duration_h = duration
-        self.distance_km = distance
-        self.speed_km_in_h = speed
-        self.calories_kcal = calories
+    training_type: str
+    duration: int
+    distance: int
+    speed: int
+    calories: int
 
     def get_message(self) -> str:
         info = (f'Тип тренировки: {self.training_type}; '
-                f'Длительность: {self.duration_h:.3f} ч.; '
-                f'Дистанция: {self.distance_km:.3f} км; '
-                f'Ср. скорость: {self.speed_km_in_h:.3f} км/ч; '
-                f'Потрачено ккал: {self.calories_kcal:.3f}.')
+                f'Длительность: {self.duration:.3f} ч.; '
+                f'Дистанция: {self.distance:.3f} км; '
+                f'Ср. скорость: {self.speed:.3f} км/ч; '
+                f'Потрачено ккал: {self.calories:.3f}.')
         return info
 
 
@@ -50,7 +46,7 @@ class Training:
 
     def get_spent_calories(self) -> float:
         """Получить количество затраченных калорий."""
-        pass
+        return NotImplementedError
 
     def show_training_info(self) -> InfoMessage:
         """Вернуть информационное сообщение о выполненной тренировке."""
@@ -139,7 +135,11 @@ def read_package(workout_type: str, data: List[int]) -> Training:
         'RUN': Running,
         'WLK': SportsWalking
     }
-    return training_type[workout_type](*data)
+    for key in training_type:
+        if key in training_type:
+            return training_type[workout_type](*data)
+        else:
+            return None
 
 
 def main(training: Training) -> None:
