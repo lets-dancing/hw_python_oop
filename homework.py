@@ -1,5 +1,5 @@
-from typing import List, ClassVar
 from dataclasses import asdict, dataclass
+from typing import List, ClassVar
 
 
 @dataclass
