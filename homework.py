@@ -1,5 +1,5 @@
 from dataclasses import asdict, dataclass
-from typing import List, ClassVar
+from typing import ClassVar, Dict, List, Type
 
 
 @dataclass
@@ -14,10 +14,10 @@ class InfoMessage:
         'Потрачено ккал: {calories:.3f}.'
     )
     training_type: str
-    duration: int
-    distance: int
-    speed: int
-    calories: int
+    duration: float
+    distance: float
+    speed: float
+    calories: float
 
     def get_message(self) -> str:
         return self.INFO.format(**asdict(self))
@@ -48,7 +48,7 @@ class Training:
 
     def get_spent_calories(self) -> float:
         """Получить количество затраченных калорий."""
-        return NotImplementedError
+        raise NotImplementedError('Метод еще не реализован.')
 
     def show_training_info(self) -> InfoMessage:
         """Вернуть информационное сообщение о выполненной тренировке."""
@@ -132,16 +132,17 @@ class Swimming(Training):
 
 def read_package(workout_type: str, data: List[int]) -> Training:
     """Прочитать данные полученные от датчиков."""
-    training_type: dict[str, Training] = {
+    training_type: Dict[str, Type[Training]] = {
         'SWM': Swimming,
         'RUN': Running,
         'WLK': SportsWalking
     }
-    for key in training_type:
-        if key in training_type:
-            return training_type[workout_type](*data)
-        else:
-            return None
+    if workout_type in training_type:
+        return training_type[workout_type](*data)
+    if workout_type not in training_type:
+        raise ValueError('К сожалению, данный тип тренировок еще '
+                         'не реализован, попробуйте обратиться '
+                         'к нему позднее.')
 
 
 def main(training: Training) -> None:
