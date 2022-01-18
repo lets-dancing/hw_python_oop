@@ -35,7 +35,7 @@ class Training:
                  duration: float,
                  weight: float) -> None:
         self.action_step = action
-        self.duration_m = duration
+        self.duration_h = duration
         self.weight_kg = weight
 
     def get_distance(self) -> float:
@@ -44,7 +44,7 @@ class Training:
 
     def get_mean_speed(self) -> float:
         """Получить среднюю скорость движения."""
-        return self.get_distance() / self.duration_m
+        return self.get_distance() / self.duration_h
 
     def get_spent_calories(self) -> float:
         """Получить количество затраченных калорий."""
@@ -53,20 +53,20 @@ class Training:
     def show_training_info(self) -> InfoMessage:
         """Вернуть информационное сообщение о выполненной тренировке."""
         return InfoMessage(
-            type(self).__name__, self.duration_m,
+            type(self).__name__, self.duration_h,
             self.get_distance(), self.get_mean_speed(),
             self.get_spent_calories()
         )
 
     def convert_hour_in_min(self) -> int:
-        """Конвертировать время тренировки из часов в минуты"""
-        return self.duration_m * self.MIN_IN_HOUR
+        """Конвертировать время тренировки из часов в минуты."""
+        return self.duration_h * self.MIN_IN_HOUR
 
 
 class Running(Training):
     """Тренировка: бег.
     Формула расчёта потраченных калорий: (18 * средняя_скорость – 20)
-    * вес_спортсмена / M_IN_KM * время_тренировки_в_минутах"""
+    * вес_спортсмена / M_IN_KM * время_тренировки_в_минутах."""
 
     COEFF_CALORIE_1: int = 18
     COEFF_CALORIE_2: int = 20
@@ -82,7 +82,7 @@ class Running(Training):
 class SportsWalking(Training):
     """Тренировка: спортивная ходьба.
     Формула расчёта потраченных калорий: (0.035 * вес + (скорость ** 2 // рост)
-    * 0.029 * вес) * время_тренировки_в_минутах"""
+    * 0.029 * вес) * время_тренировки_в_минутах."""
 
     COEFF_WEIGHT_1: float = 0.035
     COEFF_WEIGHT_2: int = 2
@@ -107,7 +107,7 @@ class Swimming(Training):
     """Тренировка: плавание.
     Формула расчета средней скорости: длина_бассейна * count_pool / M_IN_KM
     / время_тренировки
-    Формула расчета потраченных калорий: (средняя скорость + 1.1) * 2 * вес"""
+    Формула расчета потраченных калорий: (средняя скорость + 1.1) * 2 * вес."""
 
     LEN_STEP: float = 1.38
 
@@ -120,7 +120,7 @@ class Swimming(Training):
     def get_mean_speed(self) -> float:
         return (
             self.length_pool_m * self.count_pool
-            / self.M_IN_KM / self.duration_m
+            / self.M_IN_KM / self.duration_h
         )
 
     def get_spent_calories(self, coeff_speed=1.1, coeff_weight=2) -> float:
@@ -139,10 +139,10 @@ def read_package(workout_type: str, data: List[int]) -> Training:
     }
     if workout_type in training_type:
         return training_type[workout_type](*data)
-    if workout_type not in training_type:
-        raise ValueError('К сожалению, данный тип тренировок еще '
-                         'не реализован, попробуйте обратиться '
-                         'к нему позднее.')
+
+    raise ValueError('К сожалению, данный тип тренировок еще '
+                     'не реализован, попробуйте обратиться '
+                     'к нему позднее.')
 
 
 def main(training: Training) -> None:
